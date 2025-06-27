@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { UserProvider } from './context/UserContext';
+import UserForm from './components/UserForm';
+import UserList from './components/UserList';
+import { User } from './types/user';
 
-function App() {
+const App = () => {
+  const [editUser, setEditUser] = useState<User | null>(null);
+
+  const onResetEdit = () => {
+    setEditUser(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserProvider>
+      <div className="container mx-auto max-w-xl p-4">
+        <h1 className="text-3xl font-bold mb-6 text-center">User Management</h1>
+        <UserForm editUser={editUser} onResetEdit={onResetEdit} />
+        <UserList onEdit={setEditUser} />
+      </div>
+    </UserProvider>
   );
-}
+};
 
 export default App;
+
