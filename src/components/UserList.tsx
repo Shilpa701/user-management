@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 import { User } from '../types/user';
 
@@ -7,6 +8,12 @@ interface Props {
 
 const UserList = ({ onEdit }: Props) => {
   const { users, deleteUser } = useUserContext();
+  const navigate = useNavigate();
+
+  const handleEdit = (user: User) => {
+    onEdit(user); 
+    navigate('/'); 
+  };
 
   const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
@@ -36,14 +43,17 @@ const UserList = ({ onEdit }: Props) => {
                 <td className="p-2">{user.name}</td>
                 <td className="p-2">{user.age}</td>
                 <td className="p-2">{user.gender}</td>
-                <td className="p-2">{user.state}</td>
+                {/* <td className="p-2">{user.state}</td> */}
+                <td>{user.state?.label}</td>
+
                 <td className="p-2 space-x-2">
-                  <button
-                    onClick={() => onEdit(user)}
-                    className="bg-yellow-400 px-2 py-1 rounded text-white"
-                  >
-                    Edit
-                  </button>
+               
+                <button
+                  className="bg-yellow-400 px-2 py-1 rounded text-white"
+                  onClick={() => handleEdit(user)}
+                >
+                  Edit
+                </button>
                   <button
                     onClick={() => handleDelete(user.id)}
                     className="bg-red-500 px-2 py-1 rounded text-white"
